@@ -1,0 +1,28 @@
+{
+    "en": {
+        "pokemons": "Pokemons",
+        "name": "Name",
+        "catchCount": "Catched Pokemons Count",
+        "showCatched": "Show Catched Pokemons",
+        "back": "Back",
+        "next": "Next",
+        "backPokemons": "Back Pokemons Page",
+        "catchedPokemons": "Catched Pokemons",
+        "error": "There was an error showing Pokemon. Please try again later.",
+        "height": "Height",
+        "weight": "Weight"
+    },
+    "tr": {
+        "pokemons": "Pokemonlar",
+        "name": "Adı",
+        "catchCount": "Yakalanan Pokemon Sayısı",
+        "showCatched": "Yakalanan Pokemonları Göster",
+        "back": "Geri",
+        "next": "İleri",
+        "backPokemons": "Pokemonlar Sayfasına Dön",
+        "catchedPokemons": "Yakalanan Pokemonlar",
+        "error": "Pokemonları gösterirken bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.",
+        "height": "Yükseklik",
+        "weight": "Ağırlık"
+    }
+}
