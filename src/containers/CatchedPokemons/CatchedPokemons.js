@@ -1,15 +1,25 @@
 import React, { Component } from 'react';
-import './CatchedPokemons.css';
-import { Card, Row, Container, FormText, Button, Alert } from 'react-bootstrap';
+import { Card, Row, Col, Container, FormText, Button, Form, Alert } from 'react-bootstrap';
 import PokeCard from '../../components/PokeCard/PokeCard'
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
 import { css } from "@emotion/core";
-import { cathOrReleasePokemon, getPokemon } from '../../actions/pokemonActions';
+import { getPokemon } from '../../actions/pokemonActions';
+import { cathOrReleasePokemon } from '../../actions/catchAndReleaseActions';
 import HashLoader from "react-spinners/HashLoader";
 import { withTranslation } from 'react-i18next';
 import { compose } from 'redux';
+import styles from '../../assets/styles';
+import { bounceInDown } from 'react-animations';
+import Radium, {StyleRoot} from 'radium';
+import '../../assets/cssStyles.css';
 
+const stylesFade = {
+  bounce: {
+    animation: 'x 1s',
+    animationName: Radium.keyframes(bounceInDown, 'bounceInDown')
+  }
+}
 const override = css`
   display: block;
   margin: 0 auto;
@@ -34,11 +44,12 @@ class CatchedPokemons extends Component {
   getCatchedPokes = async () => {
     try {
       if(this.props.catchedPokemons){
+        let array = []
         for(let poke of this.props.catchedPokemons){
           let detail = await this.props.getPokemon(poke);
-          this.setState({pokeDetails:[...this.state.pokeDetails, detail]});
+          array.push(detail);
         }
-        this.setState({loading: false});
+        this.setState({pokeDetails:array, loading: false});
       } else {
         this.setState({loading:false})
       }
@@ -76,39 +87,69 @@ class CatchedPokemons extends Component {
             }
         })
         if(select)
-        return <PokeCard onClick={()=>this.selectPokemon(pokemon.id)} height={pokemon.height} heightText={this.props.t('height')} weight={pokemon.weight} weightText={this.props.t('weight')} select={select} id={pokemon.id} name={pokemon.name} nameText={this.props.t('name')}></PokeCard>
+        return <PokeCard key={i} onClick={()=>this.selectPokemon(pokemon.id)} height={pokemon.height} heightText={this.props.t('height')} weight={pokemon.weight} weightText={this.props.t('weight')} select={select} id={pokemon.id} name={pokemon.name} nameText={this.props.t('name')}></PokeCard>
       })
     }
   }
 
   render() {
     return (
-      <Container>
-        <Row style={{backgroundColor:"black", height: '3rem', justifyContent:"center", alignItems:"center", borderRadius:10}}>
-          <FormText style={{color: 'white', fontWeight:"600", fontSize:15}}>{this.props.t('catchedPokemons')}</FormText>
-        </Row>
-        <Card className="boxShadow" style={{marginTop:20}}>
-          <Card.Body>
-            <Row style={{justifyContent:"space-around"}}>
-              <Card.Text>{this.props.t('catchCount')}: {this.props.catchedPokemons.length}</Card.Text>
-              <Link to={"/"}><Button variant="dark">{this.props.t('backPokemons')}</Button></Link>
-            </Row>
-          </Card.Body>
-        </Card>
-        {this.state.showAlert ? <Row style={{marginTop:20, justifyContent:"center"}}> <Alert variant="danger"> {this.state.alertText} </Alert> </Row> : null}
+      <StyleRoot>
+        <div style={stylesFade.bounce}>
 
-        <Row style={{marginTop:20}}>
-          <HashLoader
-            css={override}
-            size={70}
-            color={"#123abc"}
-            loading={this.state.loading}
-          />
-        </Row>
-        <Row style={{justifyContent: "center"}}>
-          {this.state.pokeDetails ? this.renderPokemons() : null}
-        </Row>
-      </Container>
+          <Container>
+            <Row style={styles.title}>
+              <Col style={{ flex: 1 }}></Col>
+              <Col style={{ flex: 8 }}>
+                <FormText style={styles.titleText}>{this.props.t('pokemons')}</FormText>
+              </Col>
+              <Col style={styles.lang}>
+                <Form.Group>
+                  <Form.Control size="sm" as="select" onChange={(e) => this.changeLanguage(e)} value={this.state.language}>
+                    <option value="tr">Tr</option>
+                    <option value="en">En</option>
+                  </Form.Control>
+                </Form.Group>
+              </Col>
+            </Row>
+
+            <StyleRoot>
+              <div style={styles.bounceInDown}>
+                <Card className="boxShadow" style={{ marginTop: 20 }}>
+                  <Card.Body>
+                    <Row style={{ justifyContent: "space-around" }}>
+                      <Card.Text>{this.props.t('catchCount')}: {this.props.catchedPokemons.length}</Card.Text>
+                      <Link to={"/"}><Button variant="dark">{this.props.t('backPokemons')}</Button></Link>
+                    </Row>
+                  </Card.Body>
+                </Card>
+              </div>
+
+            </StyleRoot>
+
+            {this.state.showAlert ? <Row style={styles.alert}> <Alert variant="danger"> {this.state.alertText} </Alert> </Row> : null}
+
+            <Row style={{ marginTop: 20 }}>
+              <HashLoader
+                css={override}
+                size={70}
+                color={"#123abc"}
+                loading={this.state.loading}
+              />
+            </Row>
+            <Row style={{ justifyContent: "center" }}>
+
+              {this.state.pokeDetails ? this.renderPokemons() : null}
+
+            </Row>
+            <Row style={styles.paginationButton}>
+              <Button variant="outline-dark" style={{ marginRight: 2 }} onClick={() => this.backPage()} disabled={this.state.offset == 0 ? true : false} ><i className="fa fa-paper-plane-o "></i>{this.props.t('back')}</Button>
+              <Button variant="outline-dark" onClick={() => this.nextPage()} >{this.props.t('next')}</Button>
+            </Row>
+          </Container>
+        </div>
+    </StyleRoot>
+      
     );
   }
 }

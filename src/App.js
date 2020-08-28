@@ -1,30 +1,27 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { HashRouter, Route, Switch } from 'react-router-dom';
-import Loadable from 'react-loadable';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Pokemons from './containers/Pokemons/Pokemons';
+import CatchedPokemons from './containers/CatchedPokemons/CatchedPokemons';
+import PokemonDetail from './containers/PokemonDetail/PokemonDetail';
 
-const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
-
-const Pokemons = Loadable({
-  loader: () => import('./containers/Pokemons/Pokemons'),
-  loading
-});
-
-const CatchedPokemons = Loadable({
-  loader: () => import('./containers/CatchedPokemons/CatchedPokemons'),
-  loading
-});
 class App extends Component {
 
   render() {
     return (
-      <HashRouter>
+      <Router>
         <Switch>
-          <Route exact path="/catchedPokemons" name="Catched Pokemons" component={CatchedPokemons}/>
-          <Route path="/" name="Pokemons" component={Pokemons} />
+        <Route exact path="/" >
+            <Pokemons/>
+          </Route>
+          <Route exact path="/catchedPokemons" >
+            <CatchedPokemons/>
+          </Route>
+          <Route exact path="/pokemonDetail/:id" >
+            <PokemonDetail/>
+          </Route>
         </Switch>
-      </HashRouter>
+      </Router>
     );
   }
 }

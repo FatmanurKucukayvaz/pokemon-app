@@ -10,7 +10,9 @@
         "catchedPokemons": "Catched Pokemons",
         "error": "There was an error showing Pokemon. Please try again later.",
         "height": "Height",
-        "weight": "Weight"
+        "weight": "Weight",
+        "abilities": "Abilities",
+        "detail": "Detail"
     },
     "tr": {
         "pokemons": "Pokemonlar",
@@ -23,6 +25,9 @@
         "catchedPokemons": "Yakalanan Pokemonlar",
         "error": "Pokemonları gösterirken bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.",
         "height": "Yükseklik",
-        "weight": "Ağırlık"
+        "weight": "Ağırlık",
+        "abilities": "Yetenekleri",
+        "detail": "Detay"
+
     }
 }
